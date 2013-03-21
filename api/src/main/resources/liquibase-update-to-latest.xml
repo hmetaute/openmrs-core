@@ -1969,6 +1969,9 @@
 		<createIndex tableName="concept_state_conversion" unique="true" indexName="concept_state_conversion_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="concept_state_conversion_uuid_index" with="co_state_convn_uuid_index" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20090402-1519-drug" author="bwolfe">
 		<preConditions onFail="MARK_RAN"><not><indexExists indexName="drug_uuid_index"/></not></preConditions>
@@ -2095,6 +2098,9 @@
 		<createIndex tableName="notification_template" unique="true" indexName="notification_template_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="notification_template_uuid_index" with="notif_temp_uuid_index" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20090402-1519-obs" author="bwolfe">
 		<preConditions onFail="MARK_RAN"><not><indexExists indexName="obs_uuid_index"/></not></preConditions>
@@ -2130,6 +2136,9 @@
 		<createIndex tableName="patient_identifier_type" unique="true" indexName="patient_identifier_type_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="patient_identifier_type_uuid_index" with="patient_id_type_uuid_index" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20090402-1519-patient_program" author="bwolfe">
 		<preConditions onFail="MARK_RAN"><not><indexExists indexName="patient_program_uuid_index"/></not></preConditions>
@@ -2172,6 +2181,9 @@
 		<createIndex tableName="person_attribute_type" unique="true" indexName="person_attribute_type_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="person_attribute_type_uuid_index" with="person_attr_type_uuid_index" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20090402-1519-person_name" author="bwolfe">
 		<preConditions onFail="MARK_RAN"><not><indexExists indexName="person_name_uuid_index"/></not></preConditions>
@@ -2207,6 +2219,9 @@
 		<createIndex tableName="program_workflow_state" unique="true" indexName="program_workflow_state_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="program_workflow_state_uuid_index" with="prog_wf_state_uuid_index" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20090402-1519-relationship" author="bwolfe">
 		<preConditions onFail="MARK_RAN"><not><indexExists indexName="relationship_uuid_index"/></not></preConditions>
@@ -2505,6 +2520,9 @@
 		<createIndex tableName="scheduler_task_config" unique="true" indexName="scheduler_task_config_uuid_index" >
 			<column name="uuid" />
 		</createIndex>
+		<modifySql dbms="oracle">
+            <replace replace="scheduler_task_config_uuid_index" with="schr_task_config_uuid_index" />
+        </modifySql>
 	</changeSet>
 	
 	<changeSet id="20090907-1" author="Knoll_Frank" dbms="mysql">
@@ -3569,10 +3587,18 @@
 		</delete>
 	</changeSet>
 
-	<changeSet id="20100607-1550h" author="wyclif">
-		<preConditions onFail="MARK_RAN">
+	<changeSet id="20100607-1550h" author="wyclif" dbms="mysql | postgresql">
+		<preConditions onFail="MARK_RAN" >
 			<not><sqlCheck expectedResult="0">SELECT count(*) FROM concept WHERE retired = FALSE</sqlCheck></not>
-		</preConditions>				
+		</preConditions>
+		<comment>Validating and attempting to fix invalid concepts and ConceptNames</comment>
+		<customChange class="org.openmrs.util.databasechange.ConceptValidatorChangeSet"/>				
+	</changeSet>
+	
+	<changeSet id="20100607-1550h" author="wyclif" dbms="oracle">
+		<preConditions onFail="MARK_RAN" >
+			<not><sqlCheck expectedResult="0">SELECT count(*) FROM concept WHERE retired = 0</sqlCheck></not>
+		</preConditions>
 		<comment>Validating and attempting to fix invalid concepts and ConceptNames</comment>
 		<customChange class="org.openmrs.util.databasechange.ConceptValidatorChangeSet"/>				
 	</changeSet>
@@ -3613,7 +3639,7 @@
 		</createIndex>
 	</changeSet>
 	
-	<changeSet id="201008201345" author="mseaton">			
+	<changeSet id="201008201345" author="mseaton" dbms="mysql">			
 		<comment>Validates Program Workflow States for possible configuration problems and reports warnings</comment>
 		<customChange class="org.openmrs.util.databasechange.ProgramValidatorChangeSet"/>				
 	</changeSet>
@@ -3650,7 +3676,7 @@
 		<dropColumn tableName="concept" columnName="default_charge"/>
 	</changeSet>
 	
-	<changeSet id="201010051745" author="wyclif">
+	<changeSet id="201010051745" author="wyclif" dbms="mysql">
 		<comment>Setting the global property 'patient.identifierRegex' to an empty string</comment>
 		<update tableName="global_property">
 			<column name="property_value" value=""/>
@@ -3658,7 +3684,7 @@
 		</update>
 	</changeSet>
 	
-	<changeSet id="201010051746" author="wyclif">
+	<changeSet id="201010051746" author="wyclif" dbms="mysql">
 		<comment>Setting the global property 'patient.identifierSuffix' to an empty string</comment>
 		<update tableName="global_property">
 			<column name="property_value" value=""/>

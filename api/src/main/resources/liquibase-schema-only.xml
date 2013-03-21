@@ -1896,7 +1896,7 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(4000)"/>
+            <column name="description" type="varchar(5000)"/>
             <column name="type" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -1927,6 +1927,9 @@
         </createTable>
         <modifySql dbms="mssql">
             <replace replace="CHAR(38)" with="UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID()" />
+        </modifySql>
+        <modifySql dbms="oracle">
+            <replace replace="5000" with="4000" />
         </modifySql>
     </changeSet>
     <changeSet id="20110915-1215" author="sunbiz">
@@ -2451,6 +2454,9 @@
         <createIndex indexName="concept_datatype_retired_status" tableName="concept_datatype" unique="false">
             <column name="retired"/>
         </createIndex>
+        <modifySql dbms="oracle">
+            <replace replace="concept_datatype_retired_status" with="con_dtype_retired_stat" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-87">
         <createIndex indexName="name_of_concept" tableName="concept_name" unique="false">
@@ -2477,6 +2483,9 @@
             <column name="program_workflow_id"/>
             <column name="concept_id"/>
         </createIndex>
+        <modifySql dbms="oracle">
+            <replace replace="unique_workflow_concept_in_conversion" with="u_wf_conc_in_conver" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-92">
         <createIndex indexName="word_in_concept_name" tableName="concept_word" unique="false">
@@ -2517,6 +2526,9 @@
         <createIndex indexName="patient_identifier_type_retired_status" tableName="patient_identifier_type" unique="false">
             <column name="retired"/>
         </createIndex>
+        <modifySql dbms="oracle">
+            <replace replace="patient_identifier_type_retired_status" with="p_id_type_retired_stat" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-100">
         <createIndex indexName="person_birthdate" tableName="person" unique="false">
@@ -2542,6 +2554,9 @@
         <createIndex indexName="person_attribute_type_retired_status" tableName="person_attribute_type" unique="false">
             <column name="retired"/>
         </createIndex>
+        <modifySql dbms="oracle">
+            <replace replace="person_attribute_type_retired_status" with="pe_attr_type_ret_stat" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-105">
         <createIndex indexName="first_name" tableName="person_name" unique="false">
@@ -2603,11 +2618,17 @@
             <column name="published"/>
             <column name="retired"/>
         </createIndex>	
+        <modifySql dbms="oracle">
+            <replace replace="form_published_and_retired_index" with="form_pub_and_ret_i" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1103" author="sunbiz">
         <createIndex tableName="hl7_in_archive" indexName="hl7_in_archive_message_state_idx">
             <column name="message_state"/>
         </createIndex>
+        <modifySql dbms="oracle">
+            <replace replace="hl7_in_archive_message_state_idx" with="hl7_in_a_msg_state_idx" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1104" author="sunbiz">
         <createIndex tableName="concept_word" indexName="concept_word_weight_index">
@@ -2674,6 +2695,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-126">
         <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="concept_datatype" constraintName="user_who_retired_concept_datatype" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+         <modifySql dbms="oracle">
+            <replace replace="user_who_retired_concept_datatype" with="u_who_retired_co_dtype" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-128">
         <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="concept_description" constraintName="user_who_changed_description" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -2800,6 +2824,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-175">
         <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="encounter_type" constraintName="user_who_retired_encounter_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_retired_encounter_type" with="u_who_r_encounter_type" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-176">
         <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="field" constraintName="user_who_changed_field" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -2842,6 +2869,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-189">
         <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="form_field" constraintName="user_who_last_changed_form_field" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_last_changed_form_field" with="u_who_last_cha_form_fi" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-190">
         <addForeignKeyConstraint baseColumnNames="creator" baseTableName="form_field" constraintName="user_who_created_form_field" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -2989,6 +3019,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-241">
         <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="patient_identifier_type" constraintName="user_who_retired_patient_identifier_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_retired_patient_identifier_type" with="u_who_ret_p_id_type" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-242">
         <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="patient_program" constraintName="user_who_changed" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -3004,6 +3037,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-246">
         <addForeignKeyConstraint baseColumnNames="voided_by" baseTableName="patient_program" constraintName="user_who_voided_patient_program" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_voided_patient_program" with="u_who_voided_p_program" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-247">
         <addForeignKeyConstraint baseColumnNames="changed_by" baseTableName="patient_state" constraintName="patient_state_changer" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -3064,6 +3100,9 @@
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-266">
         <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="person_attribute_type" constraintName="user_who_retired_person_attribute_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_retired_person_attribute_type" with="u_who_r_pe_att_type" />
+        </modifySql>
     </changeSet>
     <changeSet author="ben (generated)" id="1227303685425-267">
         <addForeignKeyConstraint baseColumnNames="creator" baseTableName="person_name" constraintName="user_who_made_name" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
@@ -3217,6 +3256,9 @@
     </changeSet>
     <changeSet id="20110915-0357" author="sunbiz">
         <addForeignKeyConstraint baseColumnNames="retired_by" baseTableName="concept_reference_source" constraintName="user_who_retired_concept_source" deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id" referencedTableName="users"/>
+        <modifySql dbms="oracle">
+            <replace replace="user_who_retired_concept_source" with="u_who_r_concept_source" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0547" author="sunbiz">
         <addForeignKeyConstraint constraintName="encounter_changed_by" baseTableName="encounter" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
@@ -3232,21 +3274,36 @@
     </changeSet>
     <changeSet id="20110915-0634" author="sunbiz">
         <addForeignKeyConstraint constraintName="user_who_retired_relationship_type" baseTableName="relationship_type" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_retired_relationship_type" with="u_who_r_relationship_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0823" author="sunbiz">
         <addForeignKeyConstraint constraintName="user_who_retired_active_list_type" baseTableName="active_list_type" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_retired_active_list_type" with="u_who_r_active_list_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0824" author="sunbiz">
         <addForeignKeyConstraint constraintName="user_who_created_active_list_type" baseTableName="active_list_type" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_created_active_list_type" with="u_who_c_active_list_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0836" author="sunbiz">
         <addForeignKeyConstraint constraintName="user_who_voided_active_list" baseTableName="active_list" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="user_who_voided_active_list" with="u_who_voided_active_list" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0837" author="sunbiz">
         <addForeignKeyConstraint constraintName="user_who_created_active_list" baseTableName="active_list" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
     </changeSet>
     <changeSet id="20110915-0838" author="sunbiz">
         <addForeignKeyConstraint constraintName="active_list_type_of_active_list" baseTableName="active_list" baseColumnNames="active_list_type_id" referencedTableName="active_list_type" referencedColumnNames="active_list_type_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="active_list_type_of_active_list" with="act_list_type_of_act_list" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-0839" author="sunbiz">
         <addForeignKeyConstraint constraintName="person_of_active_list" baseTableName="active_list" baseColumnNames="person_id" referencedTableName="person" referencedColumnNames="person_id" />
@@ -3277,6 +3334,9 @@
     </changeSet>
     <changeSet id="20110915-1202" author="sunbiz">
         <addForeignKeyConstraint constraintName="patient_identifier_changed_by"	baseTableName="patient_identifier" baseColumnNames="changed_by"	referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="patient_identifier_changed_by" with="p_id_changed_by" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1203" author="sunbiz">
         <addForeignKeyConstraint constraintName="relationship_changed_by" baseTableName="relationship" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
@@ -3319,60 +3379,114 @@
     </changeSet>
     <changeSet id="20110915-1301" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_type_creator_fk" baseTableName="visit_attribute_type" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_type_creator_fk" with="visit_attr_type_creator_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1302" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_type_changed_by_fk" baseTableName="visit_attribute_type" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_type_changed_by_fk" with="visit_attr_type_changed_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1303" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_type_retired_by_fk" baseTableName="visit_attribute_type" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_type_retired_by_fk" with="visit_attr_type_r_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1312" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_visit_fk" baseTableName="visit_attribute" baseColumnNames="visit_id" referencedTableName="visit" referencedColumnNames="visit_id"/>
     </changeSet>
     <changeSet id="20110915-1313" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_attribute_type_id_fk" baseTableName="visit_attribute" baseColumnNames="attribute_type_id" referencedTableName="visit_attribute_type" referencedColumnNames="visit_attribute_type_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_attribute_type_id_fk" with="visit_attr_attr_type_id_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1314" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_creator_fk" baseTableName="visit_attribute" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_creator_fk" with="visit_attr_creator_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1315" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_changed_by_fk" baseTableName="visit_attribute" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="visit_attribute_changed_by_fk" with="visit_attr_ch_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1316" author="sunbiz">
         <addForeignKeyConstraint constraintName="visit_attribute_voided_by_fk" baseTableName="visit_attribute" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="visit_attribute_voided_by_fk" with="visit_attr_voided_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1317" author="sunbiz">
         <addUniqueConstraint tableName="concept_reference_source" columnNames="hl7_code" constraintName="concept_source_unique_hl7_codes"/>
+        <modifySql dbms="oracle">
+            <replace replace="concept_source_unique_hl7_codes" with="co_src_unique_hl7_codes" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1320" author="sunbiz">
         <addForeignKeyConstraint constraintName="program_outcomes_concept_id_fk" baseTableName="program" baseColumnNames="outcomes_concept_id" referencedTableName="concept" referencedColumnNames="concept_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="program_outcomes_concept_id_fk" with="pro_outcomes_con_id_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1323" author="sunbiz">
         <addForeignKeyConstraint constraintName="patient_program_outcome_concept_id_fk" baseTableName="patient_program" baseColumnNames="outcome_concept_id" referencedTableName="concept" referencedColumnNames="concept_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="patient_program_outcome_concept_id_fk" with="p_pro_outcome_con_id_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1327" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_type_creator_fk" baseTableName="location_attribute_type" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_type_creator_fk" with="loc_attr_type_creator_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1328" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_type_changed_by_fk" baseTableName="location_attribute_type" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_type_changed_by_fk" with="loc_attr_type_changed_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1329" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_type_retired_by_fk" baseTableName="location_attribute_type" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_type_retired_by_fk" with="loc_attr_type_r_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1342" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_location_fk" baseTableName="location_attribute" baseColumnNames="location_id" referencedTableName="location" referencedColumnNames="location_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_location_fk" with="loc_attr_loc_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1343" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_attribute_type_id_fk" baseTableName="location_attribute" baseColumnNames="attribute_type_id" referencedTableName="location_attribute_type" referencedColumnNames="location_attribute_type_id" />
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_attribute_type_id_fk" with="loc_attr_attr_type_id_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1344" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_creator_fk" baseTableName="location_attribute" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="loc_attr_creator_fk" with="loc_attr_creator_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1345" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_changed_by_fk" baseTableName="location_attribute" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_changed_by_fk" with="loc_attr_changed_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1346" author="sunbiz">
         <addForeignKeyConstraint constraintName="location_attribute_voided_by_fk" baseTableName="location_attribute" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <modifySql dbms="oracle">
+            <replace replace="location_attribute_voided_by_fk" with="loc_attr_voided_by_fk" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1440" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_creator" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_reference_term" baseColumnNames="creator"/>
@@ -3388,18 +3502,30 @@
     </changeSet>
     <changeSet id="20110915-1451" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_creator_concept_map_type" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_map_type" baseColumnNames="creator"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_user_creator_concept_map_type" with="mapped_u_cre_co_map_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1452" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_changed_concept_map_type" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_map_type" baseColumnNames="changed_by"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_user_changed_concept_map_type" with="mapped_u_changed_co_map_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1453" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_retired_concept_map_type" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_map_type" baseColumnNames="retired_by"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_user_retired_concept_map_type" with="mapped_u_r_co_map_type" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1311" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_concept_map_type" referencedTableName="concept_map_type" referencedColumnNames="concept_map_type_id" baseTableName="concept_reference_map" baseColumnNames="concept_map_type_id"/>
     </changeSet>
     <changeSet id="20110915-1524" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_changed_ref_term" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_reference_map" baseColumnNames="changed_by"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_user_changed_ref_term" with="mapped_u_changed_ref_term" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1530" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_term_a" referencedTableName="concept_reference_term" referencedColumnNames="concept_reference_term_id" baseTableName="concept_reference_term_map" baseColumnNames="term_a_id"/>
@@ -3409,21 +3535,39 @@
     </changeSet>
     <changeSet id="20110915-1532" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_concept_map_type_ref_term_map" referencedTableName="concept_map_type" referencedColumnNames="concept_map_type_id" baseTableName="concept_reference_term_map" baseColumnNames="a_is_to_b_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_concept_map_type_ref_term_map" with="mapped_co_map_t_ref_term_map" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1533" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_creator_ref_term_map" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_reference_term_map" baseColumnNames="creator"/>
+        <modifySql dbms="oracle">
+            <replace replace="mapped_user_creator_ref_term_map" with="mapped_u_cr_ref_term_map" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1534" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_user_changed_ref_term_map" referencedTableName="users" referencedColumnNames="user_id" baseTableName="concept_reference_term_map" baseColumnNames="changed_by"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_user_changed_ref_term_map" with="mapped_u_ch_ref_term_map" />
+        </modifySql>
     </changeSet>
     <changeSet id="20110915-1536" author="sunbiz">
         <addForeignKeyConstraint constraintName="mapped_concept_reference_term" referencedTableName="concept_reference_term" referencedColumnNames="concept_reference_term_id" baseTableName="concept_reference_map" baseColumnNames="concept_reference_term_id"/>
+    	<modifySql dbms="oracle">
+            <replace replace="mapped_concept_reference_term" with="mapped_con_reference_term" />
+        </modifySql>
     </changeSet>
     <changeSet id="20120529-2230" author="mvorobey">
         <addForeignKeyConstraint constraintName="privilege_which_can_view_encounter_type" baseTableName="encounter_type" baseColumnNames="view_privilege" referencedTableName="privilege" referencedColumnNames="privilege"/>
+		<modifySql dbms="oracle">
+            <replace replace="privilege_which_can_view_encounter_type" with="priv_which_can_view_enc_type" />
+        </modifySql>
 	</changeSet>
 	<changeSet id="20120529-2231" author="mvorobey">
         <addForeignKeyConstraint constraintName="privilege_which_can_edit_encounter_type" baseTableName="encounter_type" baseColumnNames="edit_privilege" referencedTableName="privilege" referencedColumnNames="privilege"/>
+        <modifySql dbms="oracle">
+            <replace replace="privilege_which_can_edit_encounter_type" with="priv_which_can_edit_enc_type" />
+        </modifySql>
 	</changeSet>
     
     <!-- Skip changesets from liquibase-update-to-latest when new installation -->
