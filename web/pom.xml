@@ -87,11 +87,7 @@
       <dependency>
          <groupId>postgresql</groupId>
          <artifactId>postgresql</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>com.oracle</groupId>
-         <artifactId>ojdbc14</artifactId>
-      </dependency>
+      </dependency>      
       <dependency>
          <groupId>net.sourceforge.jtds</groupId>
          <artifactId>jtds</artifactId>
